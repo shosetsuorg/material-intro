@@ -367,20 +367,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     dotCenterX[nextXIndex],
                     page == pageCount - 1 ? INVALID_FRACTION : joiningFractions[page],
                     dotRevealFractions[page]);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                combinedUnselectedPath.op(unselectedPath, Path.Op.UNION);
-            } else {
-                combinedUnselectedPath.addPath(unselectedPath);
-            }
+            combinedUnselectedPath.op(unselectedPath, Path.Op.UNION);
         }
         // draw any retreating joins
         if (retreatingJoinX1 != INVALID_FRACTION) {
             Path retreatingJoinPath = getRetreatingJoinPath();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                combinedUnselectedPath.op(retreatingJoinPath, Path.Op.UNION);
-            } else {
-                combinedUnselectedPath.addPath(retreatingJoinPath);
-            }
+            combinedUnselectedPath.op(retreatingJoinPath, Path.Op.UNION);
         }
         canvas.drawPath(combinedUnselectedPath, unselectedPaint);
     }
@@ -455,11 +447,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     controlX2, controlY2,
                     endX2, endY2);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                unselectedDotPath.op(unselectedDotLeftPath, Path.Op.UNION);
-            } else {
-                unselectedDotPath.addPath(unselectedDotLeftPath);
-            }
+            unselectedDotPath.op(unselectedDotLeftPath, Path.Op.UNION);
 
             // now do the next dot to the right
             unselectedDotRightPath.rewind();
@@ -492,11 +480,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             unselectedDotRightPath.cubicTo(controlX1, controlY1,
                     controlX2, controlY2,
                     endX2, endY2);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                unselectedDotPath.op(unselectedDotRightPath, Path.Op.UNION);
-            } else {
-                unselectedDotPath.addPath(unselectedDotRightPath);
-            }
+            unselectedDotPath.op(unselectedDotRightPath, Path.Op.UNION);
         }
 
         if (joiningFraction > 0.5f && joiningFraction < 1f
@@ -650,11 +634,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 selectedDotX = (Float) valueAnimator.getAnimatedValue();
                 retreatAnimation.startIfNecessary(selectedDotX);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    postInvalidateOnAnimation();
-                } else {
-                    postInvalidate();
-                }
+                postInvalidateOnAnimation();
             }
         });
         moveSelected.addListener(new AnimatorListenerAdapter() {
@@ -683,30 +663,18 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private void setJoiningFraction(int leftDot, float fraction) {
         if (leftDot < joiningFractions.length) {
             joiningFractions[leftDot] = fraction;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                postInvalidateOnAnimation();
-            } else {
-                postInvalidate();
-            }
+            postInvalidateOnAnimation();
         }
     }
 
     private void clearJoiningFractions() {
         Arrays.fill(joiningFractions, 0f);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            postInvalidateOnAnimation();
-        } else {
-            postInvalidate();
-        }
+        postInvalidateOnAnimation();
     }
 
     private void setDotRevealFraction(int dot, float fraction) {
         dotRevealFractions[dot] = fraction;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            postInvalidateOnAnimation();
-        } else {
-            postInvalidate();
-        }
+        postInvalidateOnAnimation();
     }
 
     /**
@@ -772,11 +740,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            postInvalidateOnAnimation();
-                        } else {
-                            postInvalidate();
-                        }
+                        postInvalidateOnAnimation();
                         // start any reveal animations if we've passed them
                         for (PendingRevealAnimator pendingReveal : revealAnimations) {
                             pendingReveal.startIfNecessary(retreatingJoinX1);
@@ -795,11 +759,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         retreatingJoinX2 = (Float) valueAnimator.getAnimatedValue();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            postInvalidateOnAnimation();
-                        } else {
-                            postInvalidate();
-                        }
+                        postInvalidateOnAnimation();
                         // start any reveal animations if we've passed them
                         for (PendingRevealAnimator pendingReveal : revealAnimations) {
                             pendingReveal.startIfNecessary(retreatingJoinX2);
@@ -818,22 +778,14 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     }
                     retreatingJoinX1 = initialX1;
                     retreatingJoinX2 = initialX2;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        postInvalidateOnAnimation();
-                    } else {
-                        postInvalidate();
-                    }
+                    postInvalidateOnAnimation();
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     retreatingJoinX1 = INVALID_FRACTION;
                     retreatingJoinX2 = INVALID_FRACTION;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        postInvalidateOnAnimation();
-                    } else {
-                        postInvalidate();
-                    }
+                    postInvalidateOnAnimation();
                 }
             });
         }
@@ -863,11 +815,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     setDotRevealFraction(PendingRevealAnimator.this.dot, 0f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        postInvalidateOnAnimation();
-                    } else {
-                        postInvalidate();
-                    }
+                    postInvalidateOnAnimation();
                 }
             });
         }
