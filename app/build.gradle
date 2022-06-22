@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 def versionMajor = 1
-def versionMinor = 6
-def versionPatch = 3
+def versionMinor = 7
+def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
@@ -39,8 +39,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.6.1'
     //Firebase
-    implementation 'com.google.firebase:firebase-core:21.0.0'
-    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    //implementation 'com.google.firebase:firebase-core:21.0.0'
+    //implementation 'com.google.firebase:firebase-crash:16.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
