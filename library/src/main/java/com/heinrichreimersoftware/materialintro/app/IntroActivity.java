@@ -241,7 +241,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_CURRENT_ITEM, miPager.getCurrentItem());
         outState.putBoolean(KEY_FULLSCREEN, fullscreen);
@@ -333,21 +333,11 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     public void resetButtonNextOnClickListener() {
-        miButtonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextSlide();
-            }
-        });
+        miButtonNext.setOnClickListener(v -> nextSlide());
     }
 
     public void resetButtonBackOnClickListener() {
-        miButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performButtonBackPress();
-            }
-        });
+        miButtonBack.setOnClickListener(v -> performButtonBackPress());
     }
 
     private void smoothScrollPagerTo(final int position) {
@@ -960,17 +950,14 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     public void autoplay(@IntRange(from = 1) long delay, @IntRange(from = -1) int repeatCount) {
         autoplayCounter = repeatCount;
         autoplayDelay = delay;
-        autoplayCallback = new Runnable() {
-            @Override
-            public void run() {
-                if (autoplayCounter == 0) {
-                    cancelAutoplay();
-                    return;
-                }
-                int distance = nextSlideAuto();
-                if (distance != 0)
-                    autoplayHandler.postDelayed(autoplayCallback, autoplayDelay + calculateScrollDuration(distance));
+        autoplayCallback = () -> {
+            if (autoplayCounter == 0) {
+                cancelAutoplay();
+                return;
             }
+            int distance = nextSlideAuto();
+            if (distance != 0)
+                autoplayHandler.postDelayed(autoplayCallback, autoplayDelay + calculateScrollDuration(distance));
         };
         autoplayHandler.postDelayed(autoplayCallback, autoplayDelay);
     }

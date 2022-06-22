@@ -52,6 +52,7 @@ import com.heinrichreimersoftware.materialintro.view.parallax.ParallaxSlideFragm
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
@@ -146,13 +147,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         if (permissions == null) {
             return buttonCtaClickListener;
         }
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (fragment.getActivity() != null)
-                    ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
-                            permissionsRequestCode);
-            }
+        return v -> {
+            if (fragment.getActivity() != null)
+                ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
+                        permissionsRequestCode);
         };
     }
 
@@ -218,15 +216,15 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         if (canGoBackward != that.canGoBackward) return false;
         if (permissionsRequestCode != that.permissionsRequestCode) return false;
         if (buttonCtaLabelRes != that.buttonCtaLabelRes) return false;
-        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
+        if (!Objects.equals(fragment, that.fragment))
             return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null)
+        if (!Objects.equals(title, that.title)) return false;
+        if (!Objects.equals(description, that.description))
             return false;
         if (!Arrays.equals(permissions, that.permissions)) return false;
-        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null)
+        if (!Objects.equals(buttonCtaLabel, that.buttonCtaLabel))
             return false;
-        return buttonCtaClickListener != null ? buttonCtaClickListener.equals(that.buttonCtaClickListener) : that.buttonCtaClickListener == null;
+        return Objects.equals(buttonCtaClickListener, that.buttonCtaClickListener);
 
     }
 
